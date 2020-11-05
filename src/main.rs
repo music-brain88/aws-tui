@@ -39,7 +39,7 @@ fn main() -> Result<(), io::Error> {
         f.render_widget(block, chunks[1]);
     })
 
-    execute!(stdout, cursor::Hide).unwrap();
-    execute!(stdout, terminal::Clear(terminal::ClearType::All)).unwrap();
-    terminal::enable_raw_mode().unwrap();
+    // execute!(stdout, cursor::Hide).unwrap();
+    // execute!(stdout, terminal::Clear(terminal::ClearType::All)).unwrap();
+    // terminal::enable_raw_mode().unwrap();
 }
