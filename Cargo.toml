@@ -10,3 +10,4 @@ edition = "2018"
 tui = { version = "0.12", default-features = false, features = ['crossterm']  }
 termion = "1.5.5"
 crossterm = "0.18.2"
+cursive = "0.15.0"

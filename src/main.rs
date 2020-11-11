@@ -1,45 +1,32 @@
-use std::io;
-use std::io::Write;
-use crossterm::terminal;
-use crossterm::cursor;
-use crossterm::event::{Event, KeyCode, KeyEvent, KeyModifiers, MouseEvent};
-use crossterm::execute;
-use termion::raw::IntoRawMode;
-use tui::Terminal;
-use tui::backend::CrosstermBackend;
-use tui::widgets::{Widget, Block, Borders};
-use tui::layout::{Layout, Constraint, Direction};
+use cursive::Cursive;
+use cursive::views::{Dialog, TextView};
+
+fn main() {
+        // Creates the cursive root - required for every application.
+        let mut siv = cursive::default();
+        //
+        // Creates a dialog with a single "Quit" button
+        siv.add_layer(Dialog::around(TextView::new("AWS Config Manger"))
+        .title("AWS IAM Manger")
+        .button("Start", show_next)
+        .button("Quit", |s| s.quit()));
+        // Starts envent loop
+        siv.run();
+}
+
+fn show_next(s: &mut Cursive) {
+    s.pop_layer();
+    s.add_layer(Dialog::text("Did you do the thing?")
+    .title("Question 1")
+    .button("Yes!", |s| show_answer(s, "I knew it! Well done!"))
+    .button("No!", |s| show_answer(s, "I knew you couldn't be trusted!"))
+    .button("Uh?", |s| s.add_layer(Dialog::info("Try again!"))));
+}
 
 
-fn main() -> Result<(), io::Error> {
-    let mut stdout = io::stdout().into_raw_mode()?;
-
-
-    let backend = CrosstermBackend::new(stdout);
-    let mut terminal = Terminal::new(backend)?;
-    terminal.draw(|f| {
-        let chunks = Layout::default()
-            .direction(Direction::Vertical)
-            .margin(1)
-            .constraints(
-                [
-                    Constraint::Percentage(10),
-                    Constraint::Percentage(10),
-                    Constraint::Percentage(80)
-                ].as_ref()
-            )
-            .split(f.size());
-        let block = Block::default()
-            .title("Block")
-            .borders(Borders::ALL);
-        f.render_widget(block, chunks[0]);
-        let block = Block::default()
-            .title("Block 2")
-            .borders(Borders::ALL);
-        f.render_widget(block, chunks[1]);
-    })
-
-    // execute!(stdout, cursor::Hide).unwrap();
-    // execute!(stdout, terminal::Clear(terminal::ClearType::All)).unwrap();
-    // terminal::enable_raw_mode().unwrap();
+fn show_answer(s: &mut Cursive, msg: &str) {
+        s.pop_layer();
+        s.add_layer(Dialog::text(msg)
+        .title("Results")
+        .button("Finish", |s| s.quit()));
 }
