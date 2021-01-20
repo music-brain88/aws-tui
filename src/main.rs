@@ -1,6 +1,14 @@
 use cursive::Cursive;
 use cursive::views::{Dialog, TextView};
 
+
+use rusoto_core::{Region, RusotoError};
+use rusoto_sts::{Sts, StsClient};
+use rusoto_sts::{GetSessionTokenRequest};
+
+
+use std::fmt;
+
 fn main() {
         // Creates the cursive root - required for every application.
         let mut siv = cursive::default();
